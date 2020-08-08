@@ -6,7 +6,7 @@ Similar to Lightning Component Library’s Lightning:input component, this is al
 2. In Flow Builder as a custom input field
 
 # Example
-    <crl:inputLookup LookupLabel="Customer"
+    <c:inputLookup LookupLabel="Customer"
                     LookupIcon="standard:account" 
                     LookupObject="Account"
                     LookupField_1="Name"
