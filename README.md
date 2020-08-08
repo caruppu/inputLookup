@@ -1,9 +1,19 @@
-# Salesforce App
+# Lightning Lookup Component
+	Similar to Lightning Component Library’s Lightning:input component, this is also a very much needed component sfor any developer building forms in salesforce lightning, to lookup for records from various objects.
 
-## Dev, Build and Test
+# Usage:
+• From another parent custom component
+• In Flow Builder as a custom input field
 
-## Resources
-
-## Description of Files and Directories
-
-## Issues
+# Example
+    <crl:inputLookup LookupLabel="Customer"
+                    LookupIcon="standard:account" 
+                    LookupObject="Account"
+                    LookupField_1="Name"
+                    LookupField_2="Type" 
+                    LookupField_3="AccountNumber"
+                    LookupAdditionalClause=" and AccountNumber like 'CD%'"
+                    LookupSelectedRecord="{!v.selectedCustomer}"
+                    LookupSelectedRecordId="{!v.selectedCustomerId}"
+                    LookupRowLimit="6"
+                    withSharing="true" />

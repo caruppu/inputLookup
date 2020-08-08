@@ -1,6 +1,14 @@
 <aura:documentation>
-	<aura:description>Documentation</aura:description>
-	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
-		Example Description
+	<aura:description>
+		<h1><code>c:nputLookup</code> (Aura) Component</h1>
+		<p>
+			SLDS has input field invarious formats; such as text, number, date, combo, etc. But, there is no component to lookup a record from any object and associate the selected id for the current form.
+		</p>
+		<p>
+			This component will let developers to quickly use within another component (form) as a lookup field to search & select record as same as standard lookup field in std layouts. This can be used in 
+		</p>
+	</aura:description>
+	<aura:example name="inputLookup" ref="c:inputLookup" label="InputLookup">
+		
 	</aura:example>
 </aura:documentation>
