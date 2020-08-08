@@ -20,4 +20,5 @@ Similar to Lightning Component Library’s Lightning:input component, this is al
                     
 
 # Video
-<iframe width="560" height="315" src="https://www.youtube.com/embed/2tJaTBxnkY8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+ https://youtu.be/A7LCHp2DqVk
+ https://youtu.be/2tJaTBxnkY8
