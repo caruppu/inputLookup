@@ -23,7 +23,7 @@ private class LookupControllerTest
         objLst2 = LookupController.searchObj('Account', 'Name', 'AccountNumber', 'Site', 'a', null, '5', false);
         system.assertEquals(objLst2.size()>0, true);
         
-        objLst3 = LookupController.searchObj('Account', 'Name', 'AccountNumber', 'Site', 'a', null, '5', false);
+        objLst3 = LookupController.searchObj('Account', 'Name', 'AccountNumdfdfber', 'Site', 'a', null, '5', false);
         system.assertEquals(objLst3.size()==0, true);
         Test.stopTest();
     }
