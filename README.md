@@ -20,5 +20,5 @@ Similar to Lightning Component Library’s Lightning:input component, this is al
                     
 
 # Video
- https://youtu.be/A7LCHp2DqVk
- https://youtu.be/2tJaTBxnkY8
+1. https://youtu.be/A7LCHp2DqVk
+2. https://youtu.be/2tJaTBxnkY8
