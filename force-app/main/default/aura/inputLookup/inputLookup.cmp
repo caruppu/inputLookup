@@ -1,0 +1,110 @@
+<!--
+    Component           : inputLookup
+    Atrributes          : LookupLabel (String)
+                          LookupIcon (String)
+                          LookupIconText (Alt Text - String)
+                          LookupTooltip (String)
+                          LookupObject (String - Object API Name)
+                          LookupField_1 (String - Field1 API Name) [Field to display in the lookup result]
+                          LookupField_2 (String - Field2 API Name) [Field to display in the lookup result]
+                          LookupField_3 (String - Field3 API Name) [Field to display in the lookup result]
+                          LookupAdditionalClause (String) [to develop ]
+                          LookupRowLimit (Integer) [to limit the result returned - default=5]
+                          LookupSearchText (String)
+                          LookupSelectedRecord (sObject)    [Selected Record]
+                          LookupSelectedRecordId (String)   [Selected Record Id]
+
+    Apex Controller     : InputLookupController.cls
+******************
+    Source: https://github.com/caruppu/inputLookup.git 
+    Author: Caruppu
+    Email: dev@caruppu.com
+******************
+-->
+
+<aura:component implements="force:appHostable,force:hasRecordId,force:lightningQuickAction,lightning:availableForFlowScreens,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes" 
+                access="global" 
+                controller="LookupController" >
+    
+    <!-- interactive attributes used in UI -->
+    <aura:attribute name="LookupLabel" type="string" access="global" required="true" default="Label" description="view | design - Label to display for the lookup field" />
+    <aura:attribute name="LookupIcon" type="string" access="global" default="standard:user" description="view | design - icon to display for the lookup field and returned records" />
+    <aura:attribute name="LookupIconText" type="string" access="global" default="" description="view | design - text to display against icon" />
+    <aura:attribute name="LookupTooltip" type="string" access="global" default="" description="view | design - to display a tooltip (similar to help text)" />
+    <aura:attribute name="LookupSearchText" type="string" access="public" description="view | design - to display" />
+    <aura:attribute name="LookupSelectedRecord" type="sObject" access="global" default="{}" description="view - to store selected record" />
+    <aura:attribute name="LookupSelectedRecordId" type="string" access="global" default="" description="design - to store selected record id" />
+    
+    <!-- attributes for developers to set -->
+    <aura:attribute name="LookupObject" type="string" access="global" required="true" default="" description="object to perform SOQL on" />
+    <aura:attribute name="LookupField_1" type="string" access="global" required="true" default="" description="primary field (like Name) to add in SOQL and to display in the result set" />
+    <aura:attribute name="LookupField_2" type="string" access="global" required="true" default="" description="secondary field (like AccountNumber) to add in SOQL and to display in the result set" />
+    <aura:attribute name="LookupField_3" type="string" access="global" default="" description="optional field (like Industry) to add in SOQL and to display in the result set" />
+    <aura:attribute name="LookupAdditionalClause" type="string" access="global" default="" description="optional extra WHERE CLAUSE conditions just in case to have the results more filtered based on the scenario or the place/screen where this lookup comnponent is used" />
+    <aura:attribute name="LookupRowLimit" type="integer" access="global" default="5" description="Limit to set on SOQL and to display the result sets"/>
+    <aura:attribute name="SearchResultList" type="List" access="private" description="to store the list of results records returned by SOQL" />
+    <aura:attribute name="withSharing" type="Boolean" access="global" default="true" description="to store the list of results records returned by SOQL" />
+    
+    <div class="slds">
+        <div class="slds-form-element">
+            <label class="slds-form-element__label" for="text-input-id-1">{!v.LookupLabel}</label>
+            <aura:if isTrue="{!!empty(v.LookupTooltip)}">
+                <lightning:helptext content="{!v.LookupTooltip}" />
+            </aura:if>
+            <div class="slds-form-element__control">
+                <div class="slds-combobox_container">
+                    <div aura:id="combo" class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                        
+                        <lightning:input type="search" aura:id="searchBox" name="input1" label="Enter some text" variant="label-hidden" onkeyup="{!c.searchJS}" value="{!v.LookupSearchText}" placeholder="Search..." />
+                        
+                        <div aura:id="searchPill" class="slds-pill_container slds-hide">
+                            <span class="slds-pill slds-media__center fullWidth">
+                                <span class="slds-media__figure slds-listbox__option-icon slds-m-around_x-small">
+                                    <lightning:icon iconName="{!v.LookupIcon}" class="slds-icon slds-icon_small" size="small" alternativeText="icon"/>
+                                    <span class="slds-assistive-text">{!v.LookupIconText}</span>
+                                </span>
+                                <span class="slds-media__body">
+                                    <span class="slds-listbox__option-text slds-listbox__option-text_entity">{!v.LookupSelectedRecord.f1}</span>
+                                    <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">
+                                        {! if(!empty(v.LookupField_2), v.LookupSelectedRecord.f2, '') }
+                                        {! if(and(!empty(v.LookupField_2),!empty(v.LookupField_3)), ' • ', '') }
+                                        {! if(!empty(v.LookupField_3), v.LookupSelectedRecord.f3, '') }
+                                    </span>
+                                </span>
+                                <button class="slds-button slds-button_icon slds-button_icon slds-pill__remove slds-m-right_small" title="Remove">
+                                    <lightning:icon iconName="utility:close" class="slds-icon slds-icon_small" size="small" onclick="{!c.removeSelectionJS}" alternativeText="icon"/>
+                                    <span class="slds-assistive-text">Remove</span>
+                                </button>
+                            </span>
+                        </div>                        
+                        
+                        <aura:if isTrue="{!greaterthan(v.SearchResultList.length, 0)}">
+                            <div id="listbox-id-9" class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
+                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                    <aura:iteration items="{!v.SearchResultList}" var="resultItem">
+                                        <li role="presentation" class="slds-listbox__item">
+                                            <div id="option1" onclick="{!c.selectRecordJS}" data-selectedItem="{!resultItem.Id}" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                                <span class="slds-media__figure slds-listbox__option-icon slds-m-top_x-small slds-p-right_small">
+                                                    <lightning:icon iconName="{#v.LookupIcon}" class="slds-icon slds-icon_small" size="small" alternativeText="icon"/>
+                                                </span>
+                                                <span class="slds-media__body">
+                                                    <span class="slds-listbox__option-text slds-listbox__option-text_entity">{!resultItem.f1}</span>
+                                                    <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">
+                                                        {! if(!empty(v.LookupField_2), resultItem.f2, '') }
+                                                        {! if(and(!empty(v.LookupField_2),!empty(v.LookupField_3)), ' • ', '') }
+                                                        {! if(!empty(v.LookupField_3), resultItem.f3, '') }
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </aura:iteration>
+                                </ul>
+                            </div>
+                        </aura:if>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aura:component>

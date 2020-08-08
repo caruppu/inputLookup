@@ -1,0 +1,13 @@
+<design:component label="Lookup Field" >
+	<design:attribute name="LookupLabel" label="Label" />
+    <design:attribute name="LookupIcon" label="Icon" />
+    <design:attribute name="LookupIconText" label="Icon Text" />
+    <design:attribute name="LookupTooltip" label="Tool Tip" />
+    <design:attribute name="LookupObject" label="Lookup Object" />
+    <design:attribute name="LookupField_1" label="Field 1" />
+    <design:attribute name="LookupField_2" label="Field 2" />
+    <design:attribute name="LookupField_3" label="Field 3" />
+    <design:attribute name="LookupAdditionalClause" label="Added Where Clause, if any" />
+    <design:attribute name="LookupRowLimit" label="Row Limit" />
+    <design:attribute name="LookupSelectedRecordId" label="Selected Record Id" />
+</design:component>
