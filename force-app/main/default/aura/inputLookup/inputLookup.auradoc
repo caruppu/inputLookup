@@ -5,7 +5,7 @@
 			SLDS has input field invarious formats; such as text, number, date, combo, etc. But, there is no component to lookup a record from any object and associate the selected id for the current form.
 		</p>
 		<p>
-			This component will let developers to quickly use within another component (form) as a lookup field to search & select record as same as standard lookup field in std layouts. This can be used in 
+			This component will let developers to quickly use within another component (form) as a lookup field to search &amp; select record as same as standard lookup field in std layouts. This can be used in 
 		</p>
 	</aura:description>
 </aura:documentation>
