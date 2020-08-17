@@ -1,11 +1,4 @@
 <aura:documentation>
-<<<<<<< HEAD
-	<aura:description>Documentation</aura:description>
-	<aura:example name="ExampleName" ref="exampleComponentName" label="Label">
-		Example Description
-	</aura:example>
-</aura:documentation>
-=======
 	<aura:description>
 		<h1><code>c:inputLookup</code> (Aura) Component</h1>
 		<p>
@@ -16,4 +9,3 @@
 		</p>
 	</aura:description>
 </aura:documentation>
->>>>>>> 5d9f30799b0d2a0dd1499da26d97b765c9c91fc9

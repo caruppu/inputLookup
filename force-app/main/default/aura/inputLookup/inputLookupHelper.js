@@ -22,9 +22,11 @@
             if (state === "SUCCESS") 
             {
                 var res = response.getReturnValue();
+                var combo = cmp.find("combo");
                 if (res.length == 0) 
                 {
                     cmp.set("v.Message", 'No Result Found...');
+                    $A.util.removeClass(combo, 'slds-is-open');
                 }
                 else if (res.length > 0)
                 {
@@ -34,7 +36,6 @@
                         resultItem.f3 = resultItem[f3];
                     });
                     cmp.set("v.SearchResultList", res);
-                    var combo = cmp.find("combo");
                     $A.util.addClass(combo, 'slds-is-open');
                 }
                 else

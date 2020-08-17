@@ -84,8 +84,10 @@
                                     <aura:iteration items="{!v.SearchResultList}" var="resultItem">
                                         <li role="presentation" class="slds-listbox__item">
                                             <div id="option1" onclick="{!c.selectRecordJS}" data-selectedItem="{!resultItem.Id}" class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
-                                                <span class="slds-media__figure slds-listbox__option-icon slds-m-top_x-small slds-p-right_small">
-                                                    <lightning:icon iconName="{#v.LookupIcon}" class="slds-icon slds-icon_small" size="small" alternativeText="icon"/>
+                                                <span class="slds-media__figure slds-listbox__option-icon slds-m-around_xx-small">
+                                                    <span class="slds-icon_container slds-icon-standard-account">
+                                                        <lightning:icon iconName="{#v.LookupIcon}" class="slds-icon slds-icon_small" size="small" alternativeText="icon"/>
+                                                    </span>
                                                 </span>
                                                 <span class="slds-media__body">
                                                     <span class="slds-listbox__option-text slds-listbox__option-text_entity">{!resultItem.f1}</span>
