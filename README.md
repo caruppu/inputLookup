@@ -24,4 +24,4 @@ Similar to Lightning Component Library’s Lightning:input component, this is al
 2. https://youtu.be/2tJaTBxnkY8
 
 # Package
-https://login.salesforce.com/packaging/installPackage.apexp?p0=04t4K000001Gl0q
+https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3V000000UiLm

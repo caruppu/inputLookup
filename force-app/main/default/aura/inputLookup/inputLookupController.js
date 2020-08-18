@@ -42,6 +42,7 @@
             component.set("v.LookupSearchText", null);
             component.set("v.LookupSelectedRecord", null);
             component.set("v.LookupSelectedRecordId", null);
+            component.set("v.SearchResultList", []);
             var searchBox = component.find("searchBox");
             var searchPill = component.find("searchPill");
             $A.util.addClass(searchBox, 'slds-show');

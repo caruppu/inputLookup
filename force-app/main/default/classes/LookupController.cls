@@ -14,31 +14,63 @@ public with sharing class LookupController
                                           String rowLimit, 
                                           Boolean withSharing)
     {
-        List <sObject> returnLst = new List<sObject>();
-        String qry;
-        try
+        Boolean isObjAccessible = false;
+        Boolean isF1Accessible = false;
+        Boolean isF2Accessible = false;
+        Boolean isF3Accessible = false;
+        Boolean isValidFields = true;
+        if (obj!=null && obj!='' && Schema.getGlobalDescribe().get(obj).getDescribe().isAccessible())
         {
-            searchText = String.escapeSingleQuotes(searchText);
-            qry = 'SELECT id, ' + (f2!=null&&f2!=''?(f2+', '):'') + (f3!=null&&f3!=''?(f3+', '):'') + f1 + ' FROM ' + obj 
-                + ' WHERE ' + f1 + ' LIKE \'' + searchText + '%\'' + (additionalClause!=null?additionalClause:'') + ' LIMIT ' + rowLimit;
+            isObjAccessible = true;
+            Map<String, Schema.SObjectField> fieldMap = Schema.getGlobalDescribe().get(obj).getDescribe().fields.getMap();
+            if ((f1!=null && f1!='' && fieldMap.get(f1) == null) 
+                || (f2!=null && f2!='' && fieldMap.get(f2) == null) 
+                || (f3!=null && f3!='' && fieldMap.get(f3) == null)) {
+                isValidFields = false;
+            } else {
+                if (f1!=null && f1!='' && fieldMap.get(f1) != null && fieldMap.get(f1).getDescribe().isAccessible())
+                {
+                    isF1Accessible = true;
+                }
+                if (f2!=null && f2!='' && fieldMap.get(f2) != null && fieldMap.get(f2).getDescribe().isAccessible())
+                {
+                    isF2Accessible = true;
+                }
+                if (f3!=null && f3!='' && fieldMap.get(f3) != null && fieldMap.get(f3).getDescribe().isAccessible())
+                {
+                    isF3Accessible = true;
+                }
+            }
+        }
 
-            if (withSharing)
-            {
-                returnLst = Database.query(qry);
-            }
-            else
-            {
-                returnLst = (new InnerController()).executeSOQL(qry);
-            }
-            
-        }
-        catch (Exception e)
+        List <sObject> returnLst = new List<sObject>();
+        if (isObjAccessible && isF1Accessible && isValidFields)
         {
-            system.debug(LoggingLevel.DEBUG, 'ERROR DEBUG: Query Framed (var qry): ' + qry);
-            system.debug(LoggingLevel.DEBUG, 'ERROR DETAIL: Custom Lookup Exception: ' + e.getMessage());
-            system.debug(LoggingLevel.INFO, 'ERROR INFO: Custom Lookup Exception: ' + e.getMessage());
-            system.debug(LoggingLevel.ERROR, 'ERROR DETAIL: Custom Lookup Exception: ' + e.getStackTraceString());
+            String qry;
+            try
+            {
+                searchText = String.escapeSingleQuotes(searchText);
+                qry = 'SELECT id, ' + (isF2Accessible?(f2+', '):'') + (isF3Accessible?(f3+', '):'') + f1 + ' FROM ' + obj 
+                    + ' WHERE ' + f1 + ' LIKE \'' + searchText + '%\'' + (additionalClause!=null?additionalClause:'') + ' LIMIT ' + rowLimit;
+                
+                if (withSharing)
+                {
+                    returnLst = Database.query(qry);
+                }
+                else
+                {
+                    returnLst = (new InnerController()).executeSOQL(qry);
+                }
+            }
+            catch (Exception e)
+            {
+                system.debug(LoggingLevel.DEBUG, 'ERROR DEBUG: Query Framed (var qry): ' + qry);
+                system.debug(LoggingLevel.DEBUG, 'ERROR DETAIL: Custom Lookup Exception: ' + e.getMessage());
+                system.debug(LoggingLevel.INFO, 'ERROR INFO: Custom Lookup Exception: ' + e.getMessage());
+                system.debug(LoggingLevel.ERROR, 'ERROR DETAIL: Custom Lookup Exception: ' + e.getStackTraceString());
+            }
         }
+
         return returnLst;
     }
     
